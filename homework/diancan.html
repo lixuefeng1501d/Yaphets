@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>点餐</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="dirst/css/reset.min.css">
+	<link rel="stylesheet" href="dirst/css/style.css">
+</head>
+<body ng-app='mapp'>
+	<div id='food_wrap'>
+		<header class='food_header'>
+			<p><img src="img/logo.png"></p>
+			<h2>美食</h2>
+		</header>
+		<nav class='food_nav'>
+			<a href="#">美食</a>
+			<a href="#">排序</a>
+			<a href="#">筛选</a>
+		</nav>
+		<div class='food_main' ng-controller='mCtr'>
+			<div class='food_con' ng-repeat='x in data'>
+				<div class='food_pic'>
+					<img src="https://mainsite-restapi.ele.me//fuss10.elemecdn.com/{{x.image_path}}">	
+				</div>
+				<div class='food_middle'>
+					<p class='food_title'>{{x.name}}</p>
+					<p class='food_info'>
+						<img src="img/star.png">
+						<span class='rate'>{{x.rating}}</span>
+						<span class='saleNum'>月售{{x.recent_order_num}}单</span>
+					</p>
+					<p class='food_confirm'>
+						<span>
+							{{x.float_minimum_order_amount}}起送
+						</span>
+							
+						<span class='money'>
+							{{x.piecewise_agent_fee.description}}
+						</span>
+					</p>
+				</div>
+				<div class='food_right'>
+					<section class='top'>
+						<a href="#"ng-repeat='y in x.supports'>
+							{{y.icon_name}}
+						</a>
+					</section>
+					<section class='middle'>
+						<a href="#" class='bao'>{{x.supports[1].name}}</a>
+						<a href="#" class='arrive'>{{x.delivery_mode.text}}</a>
+					</section>
+					<section class='bottom'>
+						<span class='juli'>{{x.distance}}m</span>
+						/
+						<span class='time'>{{x.order_lead_time}}分钟</span>
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src='dirst/js/angular.min.js'></script>
+	<script src='dirst/js/angular-route.min.js'></script>
+	<script>
+		var app=angular.module('mapp',['ngRoute']);
+		app.controller('mCtr',function($scope,$http){
+			$http.get('./data/restaurants.json')
+				 .success(function(data){
+				 	$scope.data=data;
+				 })
+		})
+
+	</script>
+</body>
+</html>
